@@ -307,8 +307,6 @@ int main()
 		lampProgram.setMat4("trans", r);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
 		glfwSwapBuffers(windows);
 		glfwPollEvents();
 	}
