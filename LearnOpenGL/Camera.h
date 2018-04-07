@@ -18,6 +18,7 @@ public:
 	void rotate(float hori, float vert);
 	const glm::mat4 getMatrix() const;
 	const glm::vec3 & getPosition() const;
+	const glm::vec3 getDirection() const;
 };
 
 #endif

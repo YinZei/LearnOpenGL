@@ -37,3 +37,8 @@ const glm::vec3 & Camera::getPosition() const
 {
 	return position;
 }
+
+const glm::vec3 Camera::getDirection() const
+{
+	return glm::vec3(cos(glm::radians(angle)) * sin(glm::radians(yaw)), sin(glm::radians(angle)), -cos(glm::radians(angle)) * cos(glm::radians(yaw)));
+}

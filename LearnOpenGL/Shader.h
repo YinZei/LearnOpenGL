@@ -24,6 +24,15 @@ public:
 	void setFloat(const std::string &name, float value) const;
 	void setMat4(const std::string &name, const glm::mat4 & mat) const;
 	void setVec3(const std::string &name, const glm::vec3 &value) const;
+	void setPointLight(const std::string &name, const glm::vec3 &position,
+		const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular, float constant, float linear, float quadratic);
+
+	void setDirLight(const std::string &name, const glm::vec3 &direction,
+		const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular);
+
+	void setFlashLight(const std::string &name, const glm::vec3 &ambient, 
+		const glm::vec3 &diffuse, const glm::vec3 &specular, float constant, float linear, float quadratic,
+		float cutOff, float outerCutOff);
 };
 
 #endif // SHADER_H

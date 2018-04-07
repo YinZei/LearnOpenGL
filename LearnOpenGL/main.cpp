@@ -20,8 +20,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 static Camera camera;
 
-static glm::vec3 lightInfo[] = { glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f) };
-
 int main()
 {
 	glfwInit();
@@ -178,6 +176,13 @@ int main()
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
+	glm::vec3 pointLightPositions[] = {
+		glm::vec3(0.7f,  0.2f,  2.0f),
+		glm::vec3(2.3f, -3.3f, -4.0f),
+		glm::vec3(-4.0f,  2.0f, -12.0f),
+		glm::vec3(0.0f,  0.0f, -3.0f)
+	};
+
 	GLuint VBO;
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -258,13 +263,20 @@ int main()
 	const glm::mat4 & perspective = glm::perspective(glm::radians(45.0f), 1920.0f / 1080, 0.1f, 100.0f);
 
 	program.use();
+	program.setDirLight("dirlight", glm::vec3(-0.2f, -1.0f, -0.3f),
+		glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.5f, 0.5f, 0.5f));
+
+	program.setPointLight("pointlight[0]", pointLightPositions[0], glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.0032f);
+	program.setPointLight("pointlight[1]", pointLightPositions[1], glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.0032f);
+	program.setPointLight("pointlight[2]", pointLightPositions[2], glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.0032f);
+	program.setPointLight("pointlight[3]", pointLightPositions[3], glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, 0.09f, 0.0032f);
+
+	program.setFlashLight("flashlight", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f),
+		1.0f, 0.09f, 0.032f, glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(15.0f)));
+
+	program.setMat4("projection", perspective);
 	program.setInt("material.diffuse", 0);
 	program.setInt("material.specular", 1);
-	program.setVec3("light.position", lightInfo[0]);
-	program.setVec3("light.ambient", lightInfo[1]);
-	program.setVec3("light.diffuse", lightInfo[2]);
-	program.setVec3("light.specular", lightInfo[3]);
-	program.setMat4("projection", perspective);
 	program.setFloat("material.shininess", 32.0f);
 
 	while (!glfwWindowShouldClose(windows))
@@ -288,6 +300,8 @@ int main()
 		program.use();
 		program.setVec3("cameraPos", camera.getPosition());
 		program.setMat4("view", camera.getMatrix());
+		program.setVec3("flashlight.point.position", camera.getPosition());
+		program.setVec3("flashlight.direction", camera.getDirection());
 		for (size_t i = 0; i < 10; i++)
 		{
 			glm::mat4 model(1.0f);
@@ -300,12 +314,15 @@ int main()
 		}
 
 		lampProgram.use();
-		glm::mat4 model(1.0f);
-		model = glm::translate(model, lightInfo[0]);
-		model = glm::scale(model, glm::vec3(0.1f));
-		const glm::mat4 & r = perspective * camera.getMatrix() * model;
-		lampProgram.setMat4("trans", r);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		for (size_t i = 0; i < 4; i++)
+		{
+			glm::mat4 model(1.0f);
+			model = glm::translate(model, pointLightPositions[i]);
+			model = glm::scale(model, glm::vec3(0.1f));
+			const glm::mat4 & r = perspective * camera.getMatrix() * model;
+			lampProgram.setMat4("trans", r);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 		glfwSwapBuffers(windows);
 		glfwPollEvents();

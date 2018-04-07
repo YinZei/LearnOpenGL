@@ -95,3 +95,39 @@ void Shader::setVec3(const std::string &name, const glm::vec3 &value) const
 {
 	glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
+
+void Shader::setPointLight(const std::string & name, const glm::vec3 &position,
+	const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular, float constant, float linear, float quadratic)
+{
+	setVec3(name + ".position", position);
+	setVec3(name + ".ambient", ambient);
+	setVec3(name + ".diffuse", diffuse);
+	setVec3(name + ".specular", specular);
+	setFloat(name + ".constant", constant);
+	setFloat(name + ".linear", linear);
+	setFloat(name + ".quadratic", quadratic);
+}
+
+void Shader::setDirLight(const std::string & name, const glm::vec3 &direction,
+	const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular)
+{
+	setVec3(name + ".direction", direction);
+	setVec3(name + ".ambient", ambient);
+	setVec3(name + ".diffuse", diffuse);
+	setVec3(name + ".specular", specular);
+}
+
+void Shader::setFlashLight(const std::string & name,const glm::vec3 &ambient, 
+	const glm::vec3 &diffuse, const glm::vec3 &specular, float constant, float linear, float quadratic,
+	float cutOff, float outerCutOff)
+{
+
+	setVec3(name + ".point.ambient", ambient);
+	setVec3(name + ".point.diffuse", diffuse);
+	setVec3(name + ".point.specular", specular);
+	setFloat(name + ".point.constant", constant);
+	setFloat(name + ".point.linear", linear);
+	setFloat(name + ".point.quadratic", quadratic);
+	setFloat(name + ".cutOff", cutOff);
+	setFloat(name + ".outerCutOff", outerCutOff);
+}
