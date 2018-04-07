@@ -286,7 +286,6 @@ int main()
 		float currentTime = glfwGetTime();
 
 		program.use();
-		//program.setVec3("cameraPos", glm::vec3(0.0f, 0.0f, -4.0f));
 		program.setVec3("cameraPos", camera.getPosition());
 		program.setMat4("view", camera.getMatrix());
 		for (size_t i = 0; i < 10; i++)
