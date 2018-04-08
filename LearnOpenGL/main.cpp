@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
+#include <assimp\Importer.hpp>
 
 void loadTexture(GLenum unit, const char * image, GLenum format);
 
