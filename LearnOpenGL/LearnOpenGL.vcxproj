@@ -132,6 +132,7 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assimp-vc140-mt.dll" />
     <None Include="lamp.fs" />
     <None Include="lamp.vs" />
     <None Include="source.fs" />
