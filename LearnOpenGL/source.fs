@@ -1,7 +1,7 @@
 #version 330 core
 struct Material {
-    sampler2D diffuse;
-    sampler2D specular;
+    sampler2D diffuse0;
+    sampler2D specular0;
     float     shininess;
 };
 
@@ -56,26 +56,27 @@ void main()
 {
 	vec3 result;
 
-	result = CalcDirLight(dirlight);
+	//result = CalcDirLight(dirlight);
 
-	for(int i = 0; i < NR_POINT_LIGHTS; i++)
-        result += CalcPointLight(pointlight[i]);
+	//for(int i = 0; i < NR_POINT_LIGHTS; i++)
+     //   result += CalcPointLight(pointlight[i]);
 
-    result += CalcFlashLight(flashlight);    
+    //result += CalcFlashLight(flashlight);    
     
-    FragColor = vec4(result, 1.0);
+    //FragColor = vec4(result, 1.0);
+	FragColor = vec4(1.0f, 1.0f,1.0f, 1.0f);
 }
 
 vec3 CalcDirLight(DirLight light)
 {
 	// 环境光
-	vec3 ambient = light.ambient * texture(material.diffuse, texCoord).rgb;
+	vec3 ambient = light.ambient * texture(material.diffuse0, texCoord).rgb;
   	
     // 漫反射 
     vec3 norm = normalize(norm);
     vec3 lightDir = normalize(-light.direction);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff * texture(material.diffuse, texCoord).rgb;  
+    vec3 diffuse = light.diffuse * diff * texture(material.diffuse0, texCoord).rgb;  
     
     // 镜面光
 	vec3 specular;
@@ -88,7 +89,7 @@ vec3 CalcDirLight(DirLight light)
 		vec3 viewDir = normalize(cameraPos - fragPos);
 		vec3 reflectDir = reflect(-lightDir, norm);  
 		float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-		specular = light.specular * spec * texture(material.specular, texCoord).rgb;  
+		specular = light.specular * spec * texture(material.specular0, texCoord).rgb;  
 	}
     
     return ambient + diffuse + specular;
@@ -97,13 +98,13 @@ vec3 CalcDirLight(DirLight light)
 vec3 CalcPointLight(PointLight light)
 {
 	// 环境光
-	vec3 ambient = light.ambient * texture(material.diffuse, texCoord).rgb;
+	vec3 ambient = light.ambient * texture(material.diffuse0, texCoord).rgb;
   	
     // 漫反射 
     vec3 norm = normalize(norm);
     vec3 lightDir = normalize(light.position - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff * texture(material.diffuse, texCoord).rgb;  
+    vec3 diffuse = light.diffuse * diff * texture(material.diffuse0, texCoord).rgb;  
     
     // 镜面光
 	vec3 specular;
@@ -116,7 +117,7 @@ vec3 CalcPointLight(PointLight light)
 		vec3 viewDir = normalize(cameraPos - fragPos);
 		vec3 reflectDir = reflect(-lightDir, norm);  
 		float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-		specular = light.specular * spec * texture(material.specular, texCoord).rgb;  
+		specular = light.specular * spec * texture(material.specular0, texCoord).rgb;  
 	}
     
 	float distance    = length(light.position - fragPos);
@@ -129,13 +130,13 @@ vec3 CalcPointLight(PointLight light)
 vec3 CalcFlashLight(FlashLight light)
 {
 	// 环境光
-	vec3 ambient = light.point.ambient * texture(material.diffuse, texCoord).rgb;
+	vec3 ambient = light.point.ambient * texture(material.diffuse0, texCoord).rgb;
   	
     // 漫反射 
     vec3 norm = normalize(norm);
     vec3 lightDir = normalize(light.point.position - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = light.point.diffuse * diff * texture(material.diffuse, texCoord).rgb;  
+    vec3 diffuse = light.point.diffuse * diff * texture(material.diffuse0, texCoord).rgb;  
     
     // 镜面光
 	vec3 specular;
@@ -148,7 +149,7 @@ vec3 CalcFlashLight(FlashLight light)
 		vec3 viewDir = normalize(cameraPos - fragPos);
 		vec3 reflectDir = reflect(-lightDir, norm);  
 		float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-		specular = light.point.specular * spec * texture(material.specular, texCoord).rgb;  
+		specular = light.point.specular * spec * texture(material.specular0, texCoord).rgb;  
 	}
     
 	float distance    = length(light.point.position - fragPos);
