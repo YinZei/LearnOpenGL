@@ -137,8 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp-vc140-mt.dll" />
-    <None Include="lamp.fs" />
-    <None Include="lamp.vs" />
     <None Include="nanosuit\nanosuit.blend" />
     <None Include="nanosuit\nanosuit.mtl" />
     <None Include="nanosuit\nanosuit.ojbk" />

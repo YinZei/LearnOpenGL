@@ -2,7 +2,6 @@
 
 void Model::draw(Shader & shader)
 {
-	meshes[100000];
 	for (Mesh &temp : meshes) {
 		temp.draw(shader);
 	}

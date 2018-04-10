@@ -32,14 +32,13 @@ public:
 		this->indices = indices;
 		this->vertices = vertices;
 		this->textures = textures;
-		//int c = indices[100000];
 		setup();
 	}
 
 	void setup();
 	void draw(Shader &shader);
 
-//private:
+private:
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	std::vector<Texture> textures;

@@ -58,12 +58,6 @@
     <None Include="source.vs">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="lamp.fs">
-      <Filter>资源文件</Filter>
-    </None>
-    <None Include="lamp.vs">
-      <Filter>资源文件</Filter>
-    </None>
     <None Include="assimp-vc140-mt.dll">
       <Filter>资源文件</Filter>
     </None>

@@ -56,15 +56,11 @@ void main()
 {
 	vec3 result;
 
-	//result = CalcDirLight(dirlight);
+	result = CalcDirLight(dirlight);
 
-	//for(int i = 0; i < NR_POINT_LIGHTS; i++)
-     //   result += CalcPointLight(pointlight[i]);
-
-    //result += CalcFlashLight(flashlight);    
+    result += CalcFlashLight(flashlight);    
     
-    //FragColor = vec4(result, 1.0);
-	FragColor = vec4(1.0f, 1.0f,1.0f, 1.0f);
+    FragColor = vec4(result, 1.0);
 }
 
 vec3 CalcDirLight(DirLight light)
