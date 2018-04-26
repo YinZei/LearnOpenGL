@@ -58,8 +58,8 @@ void main()
 
 	result = CalcDirLight(dirlight);
 
-    result += CalcFlashLight(flashlight);    
-    
+    result += CalcFlashLight(flashlight);
+
     FragColor = vec4(result, 1.0);
 }
 

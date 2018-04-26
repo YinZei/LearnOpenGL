@@ -11,8 +11,6 @@
 #include "Camera.h"
 #include "Model.h"
 
-void loadTexture(GLenum unit, const char * image, GLenum format);
-
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 void processInput(GLFWwindow *window, Camera & cam);
@@ -47,6 +45,7 @@ int main()
 	glfwSetCursorPosCallback(windows, mouse_callback);
 
 	Shader program("source.vs", "source.fs");
+	Shader simple("source.vs", "simple.fs");
 	
 	glm::vec3 pointLightPositions[] = {
 		glm::vec3(0.7f,  0.2f,  2.0f),
@@ -55,7 +54,6 @@ int main()
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
-	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	camera.move(0.0f, 0.0f, 4.0f);
@@ -72,7 +70,14 @@ int main()
 	program.setMat4("projection", perspective);
 	program.setFloat("material.shininess", 32.0f);
 
+	simple.use();
+	simple.setMat4("projection", perspective);
+
 	Model model("nanosuit/nanosuit.ojbk");
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 	while (!glfwWindowShouldClose(windows))
 	{
@@ -80,8 +85,9 @@ int main()
 
 		processInput(windows, camera);
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+		program.use();
 		program.setVec3("cameraPos", camera.getPosition());
 		program.setMat4("view", camera.getMatrix());
 		program.setVec3("flashlight.point.position", camera.getPosition());
@@ -90,7 +96,21 @@ int main()
 		glm::mat4 mod(1.0f);
 		mod = glm::rotate(mod, currentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
 		program.setMat4("model", mod);
+		simple.use();
+		simple.setMat4("view", camera.getMatrix());
+		mod = glm::translate(mod, glm::vec3(0.0f, -0.125f, 0.0f));
+		mod = glm::scale(mod, glm::vec3(1.05f, 1.05f, 1.05f));
+		simple.setMat4("model", mod);
+
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
 		model.draw(program);
+
+		glStencilMask(0x00);
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glDisable(GL_DEPTH_TEST);
+		model.draw(simple);
+		glEnable(GL_DEPTH_TEST);
+		glStencilMask(0xFF);
 
 		glfwSwapBuffers(windows);
 		glfwPollEvents();

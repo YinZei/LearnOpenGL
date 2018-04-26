@@ -140,6 +140,7 @@
     <None Include="nanosuit\nanosuit.blend" />
     <None Include="nanosuit\nanosuit.mtl" />
     <None Include="nanosuit\nanosuit.ojbk" />
+    <None Include="simple.fs" />
     <None Include="source.fs" />
     <None Include="source.vs" />
   </ItemGroup>

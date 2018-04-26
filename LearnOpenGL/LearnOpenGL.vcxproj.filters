@@ -70,6 +70,9 @@
     <None Include="nanosuit\nanosuit.ojbk">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="simple.fs">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="1.jpg">
